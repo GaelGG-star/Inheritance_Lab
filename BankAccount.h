@@ -15,7 +15,7 @@ private:
     double balance;
 
 public:
-    ~BankAccount(); // Destructor
+    virtual ~BankAccount() = default; // Virtual destructor
     BankAccount(const BankAccount& other); // Copy constructor
     BankAccount& operator=(const BankAccount& other); // Copy Assignment Operator
 
@@ -46,12 +46,32 @@ public:
 
     // Methods for depositing and withdrawing money
     void deposit(double amount);
-    void withdraw(double amount);
+    virtual void withdraw(double amount);
 };
 
 // Non-member operators for expressions like `newAccount = oldAccount + 50;`
 BankAccount operator+(BankAccount lhs, double amount);
 BankAccount operator-(BankAccount lhs, double amount);
+
+// checking account class
+class CheckingAccount : public BankAccount {
+private:
+    double transactionFee;
+public:
+    CheckingAccount(std::string accountNumber, std::string accountHolderName, double balance, double fee);
+    void withdraw(double amount) override;
+};
+
+// saving account class
+class SavingAccount : public BankAccount {
+private:
+    double interestRate;
+public:
+    SavingAccount(std::string accountNumber, std::string accountHolderName, double balance, double rate);
+    void withdraw(double amount) override;
+    void calculateInterest();
+};
+
 
 
 #endif //OBJECTS_CLASSES_LAB_BANKACCOUNT_H
